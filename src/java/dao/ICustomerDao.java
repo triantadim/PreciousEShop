@@ -13,7 +13,7 @@ import models.Customer;
  * @author George.Pasparakis
  */
 public interface ICustomerDao {
-    public int insert(Customer customer);
+    public int insert(Customer customer, String tableName);
     public int update(int customerId);
     public int update(String firstName, String lastName);
     public int update(String email);

@@ -5,6 +5,7 @@
  */
 package services;
 
+import dao.CustomerDao;
 import java.util.List;
 import models.Customer;
 
@@ -13,10 +14,12 @@ import models.Customer;
  * @author George.Pasparakis
  */
 public class CustomerService implements ICustomerService {
-
+    CustomerDao customerDao;
+    
     @Override
     public int insert(Customer customer) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       if(customerDao == null) customerDao = new CustomerDao();
+       return(customerDao.insert(customer, "customers"));
     }
 
     @Override
