@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package services;
+package dao;
 
 import java.util.List;
 import models.Customer;
@@ -12,7 +12,7 @@ import models.Customer;
  *
  * @author George.Pasparakis
  */
-public class CustomerService implements ICustomerService {
+public class CustomerDao implements ICustomerDao {
 
     @Override
     public int insert(Customer customer) {
