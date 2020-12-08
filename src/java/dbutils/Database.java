@@ -5,7 +5,7 @@
  */
 package dbutils;
 
-import cmdutils.Command;
+//import cmdutils.Command;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -73,8 +73,12 @@ public class Database {
         sb.append(")");
         try {
             //        System.out.println(sb.toString());
-            statement = con.createStatement();
-            result = statement.executeUpdate(sb.toString());
+            if(con != null) {
+                statement = con.createStatement();
+                result = statement.executeUpdate(sb.toString());
+            }
+            else System.out.println("Connection problems!");
+            
         } catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -105,30 +109,30 @@ public class Database {
         return(result);
     }
     
-    public int insertOrder(Scanner sc) {
-        int result = 0;
-        
-        /*  
-            Step    1 - Select customer 
-                    1.1 SELECT * FROM customers
-                    1.2 PRINT customers
-                    1.3 From cmd choose customer
-            Step    2 - Select products
-                    2.1 SELECT * FROM products
-                    2.2 PRINT products
-                    2.3 From cmd choose products
-            Step    3 - Sum products
-            Step    4 - insertOrder()
-            Step    5 - insertProductDetails()
-        */
-        int customerId = selectCustomer(sc);
-        List<ProductDTO> productsIdsQuantities = selectProducts(sc);
-        System.out.println(productsIdsQuantities);
-        double sumPricesOfSelectedProducts = sumProductsPrices(productsIdsQuantities);
-        addOrder(customerId, sumPricesOfSelectedProducts, "orders2");
-        
-        return(result);
-    }
+//    public int insertOrder(Scanner sc) {
+//        int result = 0;
+//        
+//        /*  
+//            Step    1 - Select customer 
+//                    1.1 SELECT * FROM customers
+//                    1.2 PRINT customers
+//                    1.3 From cmd choose customer
+//            Step    2 - Select products
+//                    2.1 SELECT * FROM products
+//                    2.2 PRINT products
+//                    2.3 From cmd choose products
+//            Step    3 - Sum products
+//            Step    4 - insertOrder()
+//            Step    5 - insertProductDetails()
+//        */
+//        int customerId = selectCustomer(sc);
+//        List<ProductDTO> productsIdsQuantities = selectProducts(sc);
+//        System.out.println(productsIdsQuantities);
+//        double sumPricesOfSelectedProducts = sumProductsPrices(productsIdsQuantities);
+//        addOrder(customerId, sumPricesOfSelectedProducts, "orders2");
+//        
+//        return(result);
+//    }
     
     public int addOrder(int customerId, double totalPrice, String tableName) {
         // INSERT INTO orders2(`customers_id`, `total_price`, `date`) 
@@ -154,62 +158,62 @@ public class Database {
         return(result);
     }
     
-    public int selectCustomer(Scanner sc) {
-        int customerId = -1;
-        Command cmd = new Command();
-        
-        ResultSet rs;
-        try {
-            statement = con.createStatement();
-            rs = statement.executeQuery("SELECT * FROM customers");
-            while(rs.next()) {
-                System.out.println(rs.getString("id") + ". " +
-                                   rs.getString("first_name") + " " +
-                                   rs.getString("last_name"));
-            }
-            // we should check that the returned Id is valid
-            customerId = cmd.getIntField(sc, "Please select the customer");
-        } catch (SQLException ex) {
-            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        return(customerId);
-    }
+//    public int selectCustomer(Scanner sc) {
+//        int customerId = -1;
+//        Command cmd = new Command();
+//        
+//        ResultSet rs;
+//        try {
+//            statement = con.createStatement();
+//            rs = statement.executeQuery("SELECT * FROM customers");
+//            while(rs.next()) {
+//                System.out.println(rs.getString("id") + ". " +
+//                                   rs.getString("first_name") + " " +
+//                                   rs.getString("last_name"));
+//            }
+//            // we should check that the returned Id is valid
+//            customerId = cmd.getIntField(sc, "Please select the customer");
+//        } catch (SQLException ex) {
+//            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        
+//        return(customerId);
+//    }
     
-    public List<ProductDTO> selectProducts(Scanner sc) {
-        List<ProductDTO> productIdsQuantities = new ArrayList<>();
-        Command cmd = new Command();
-        
-        ResultSet rs;
-        try {
-            statement = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            rs = statement.executeQuery("SELECT * FROM products");
-            while(rs.next()) {
-                System.out.println(rs.getString("id") + ". " +
-                                   rs.getString("name"));
-            }
-            // we should check that the returned Ids are valid
-            int choice = 1;
-            while(choice == 1) {
-                // product id
-                int prId = cmd.getIntField(sc, "Please select a product to add");
-                
-                
-                // ask for quantity for the previous product
-                int quant = cmd.getIntField(sc, "Please type the quantity of the product with id: " + prId);
-                rs.absolute(prId);
-                double price = rs.getDouble("price");
-                productIdsQuantities.add(new ProductDTO(prId, quant, price));
-                
-                // ask if he would like to add one more product
-                choice = cmd.getIntField(sc, "Would you like to add 1 more product, "
-                                           + "if yes press 1 else press any other number");
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return(productIdsQuantities);
-    }
+//    public List<ProductDTO> selectProducts(Scanner sc) {
+//        List<ProductDTO> productIdsQuantities = new ArrayList<>();
+//        Command cmd = new Command();
+//        
+//        ResultSet rs;
+//        try {
+//            statement = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+//            rs = statement.executeQuery("SELECT * FROM products");
+//            while(rs.next()) {
+//                System.out.println(rs.getString("id") + ". " +
+//                                   rs.getString("name"));
+//            }
+//            // we should check that the returned Ids are valid
+//            int choice = 1;
+//            while(choice == 1) {
+//                // product id
+//                int prId = cmd.getIntField(sc, "Please select a product to add");
+//                
+//                
+//                // ask for quantity for the previous product
+//                int quant = cmd.getIntField(sc, "Please type the quantity of the product with id: " + prId);
+//                rs.absolute(prId);
+//                double price = rs.getDouble("price");
+//                productIdsQuantities.add(new ProductDTO(prId, quant, price));
+//                
+//                // ask if he would like to add one more product
+//                choice = cmd.getIntField(sc, "Would you like to add 1 more product, "
+//                                           + "if yes press 1 else press any other number");
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return(productIdsQuantities);
+//    }
     
     public double sumProductsPrices(List<ProductDTO> products) {
         double result = 0;
