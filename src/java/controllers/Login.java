@@ -5,7 +5,7 @@
  */
 package controllers;
 
-import dbutils.Database;
+import dao.Database;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -25,7 +25,7 @@ public class Login extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Database db = new Database();
-        int result = db.insertCustomer(new Customer("Chackie", "Chan", "1111", "chakie@ch.ch"), "customer");
+        int result = db.insertCustomer(new Customer("Chackie", "Chan", "1111", "chakie@ch.ch"), "customers");
         response.setContentType("text/html;charset=UTF-8"); // servlet
         try (PrintWriter out = response.getWriter()) {
             /* for the browser */
