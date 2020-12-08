@@ -32,7 +32,7 @@ public class Database {
     public String password;
     public String database;
     
-    Connection con;
+    static Connection con;
     Statement statement;
     PreparedStatement prStatement;
     ResultSet rs;
